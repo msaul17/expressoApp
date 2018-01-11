@@ -9,6 +9,18 @@ router.get('/employees', (req, res) => {
         if (err) {
             res.sendStatus(500); 
         } else {
+           // console.log({employees: rows});
+            res.json({employees: rows});
+        }
+    });
+});
+
+router.get('/employees/:employeeId/timesheets', (req, res) => {
+    db.all('SELECT * FROM Employee WHERE is_current_employee=1;', (err, rows) => {
+        if (err) {
+            res.sendStatus(500); 
+        } else {
+           // console.log({employees: rows});
             res.json({employees: rows});
         }
     });
@@ -16,6 +28,7 @@ router.get('/employees', (req, res) => {
 
 router.post('/employees', (req, res) => {
     const employeeToCreate = req.body.employee;
+    console.log(employeeToCreate);
     db.run('INSERT INTO Employee (id, name, position, wage, is_current_employee) VALUES ($id, $name, $position, $wage, #is_current_employee)', 
     {
         $id: employeeToCreate.id,
